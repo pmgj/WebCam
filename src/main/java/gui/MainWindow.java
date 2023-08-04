@@ -3,7 +3,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
@@ -23,20 +22,12 @@ public class MainWindow extends JFrame {
 
     private void setVideoPanel() {
         JPanel panel = cam.openCamera();
-        if (panel == null) {
-            this.statusBar.setMessage("Nenhuma câmera foi detectada!");
-        } else {
-            this.statusBar.setMessage("Câmera detectada!");
-        }
+        this.statusBar.setMessage(panel == null ? "Nenhuma câmera foi detectada!" : "Câmera detectada!");
 
         if (cards != null) {
             this.getContentPane().remove(0);
         }
-        if (panel != null) {
-            cards = panel;
-        } else {
-            cards = new JPanel();
-        }
+        cards = (panel != null) ? panel : new JPanel();
         this.getContentPane().add(cards, 0);
         this.setVisible(true);
     }
@@ -77,62 +68,32 @@ public class MainWindow extends JFrame {
 
         JMenuItem menuItemIniciar = new JMenuItem("Iniciar Câmera", KeyEvent.VK_I);
         menuItemIniciar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
-        menuItemIniciar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                setVideoPanel();
-            }
-        });
+        menuItemIniciar.addActionListener((evt) -> setVideoPanel());
         menu.add(menuItemIniciar);
 
         JMenuItem menuItemFecharCamera = new JMenuItem("Fechar Câmera", KeyEvent.VK_F);
         menuItemFecharCamera.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
-        menuItemFecharCamera.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                closeVideo();
-            }
-        });
+        menuItemFecharCamera.addActionListener(evt -> closeVideo());
         menu.add(menuItemFecharCamera);
 
         JMenuItem menuItemSalvar = new JMenuItem("Salvar", KeyEvent.VK_S);
         menuItemSalvar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.ALT_MASK));
-        menuItemSalvar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                saveVideo();
-            }
-        });
+        menuItemSalvar.addActionListener(evt -> saveVideo());
         menu.add(menuItemSalvar);
 
         JMenuItem menuItemPrefs = new JMenuItem("Preferências", KeyEvent.VK_P);
         menuItemPrefs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, ActionEvent.ALT_MASK));
-        menuItemPrefs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                new PreferencesWindow();
-            }
-        });
+        menuItemPrefs.addActionListener(evt -> new PreferencesWindow());
         menu.add(menuItemPrefs);
 
         JMenuItem menuItemTelaCheia = new JMenuItem("Tela Cheia", KeyEvent.VK_T);
         menuItemTelaCheia.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
-        menuItemTelaCheia.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                setTelaCheia();
-            }
-        });
+        menuItemTelaCheia.addActionListener(evt -> setTelaCheia());
         menu.add(menuItemTelaCheia);
 
         JMenuItem menuItemFechar = new JMenuItem("Fechar", KeyEvent.VK_E);
         menuItemFechar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.ALT_MASK));
-        menuItemFechar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                System.exit(0);
-            }
-        });
+        menuItemFechar.addActionListener(evt ->System.exit(0));
         menu.add(menuItemFechar);
         this.setJMenuBar(menuBar);
     }

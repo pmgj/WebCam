@@ -4,10 +4,9 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.prefs.Preferences;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -55,7 +54,7 @@ public class PreferencesWindow {
         time.setSize(new Dimension(200, 10));
         gbc = createGbc(1, 0);
         panel.add(time, gbc);
-        
+
         gbc = createGbc(0, 2);
         panel.add(new JLabel("Diretório padrão:"), gbc);
 
@@ -63,20 +62,16 @@ public class PreferencesWindow {
         JPanel dirSel = new JPanel();
         dirSel.add(new JLabel(prefs.get(OUTPUT_DIR, ".")));
         JButton procurar = new JButton("Procurar...");
-        procurar.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                JFileChooser chooser = new JFileChooser();
-                File f = new File(prefs.get(OUTPUT_DIR, "."));
-                chooser.setCurrentDirectory(f);
-                chooser.setDialogTitle("Selecione um diretório...");
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int returnVal = chooser.showOpenDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File myFile = chooser.getSelectedFile();
-                    prefs.put(OUTPUT_DIR, myFile.getAbsolutePath());
-                }
+        procurar.addActionListener(ae -> {
+            JFileChooser chooser = new JFileChooser();
+            File f = new File(prefs.get(OUTPUT_DIR, "."));
+            chooser.setCurrentDirectory(f);
+            chooser.setDialogTitle("Selecione um diretório...");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int returnVal = chooser.showOpenDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File myFile = chooser.getSelectedFile();
+                prefs.put(OUTPUT_DIR, myFile.getAbsolutePath());
             }
         });
         dirSel.add(procurar);
